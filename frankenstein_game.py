@@ -4,7 +4,7 @@ Will You Be Frankenstien? - Super Mario Style Edition
 Enhanced graphics with detailed body parts and room decorations.
 Includes all sound effects!
 """
-
+import asyncio
 import pygame
 import sys
 import os
@@ -24,7 +24,7 @@ except pygame.error:
 
 WIDTH, HEIGHT = 1000, 650
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Will You Be Frankenstien? 🎮💕")
+pygame.display.set_caption("Will You Be Frankenstien? 🎮💕 (Enhanced Edition)")
 CLOCK = pygame.time.Clock()
 FONT_BIG = pygame.font.SysFont("arial", 52, bold=True)
 FONT_MED = pygame.font.SysFont("arial", 34)
@@ -598,7 +598,7 @@ STATE_STAGE3 = "STAGE3"
 STATE_ENDING = "ENDING"
 
 # ------------------------- SCENES -------------------------
-def title_scene():
+async def title_scene():
     start_button = Button((WIDTH//2 - 140, HEIGHT//2 + 80, 280, 80), "🎮 Start Game")
 
     particles = []
@@ -654,7 +654,7 @@ def title_scene():
         start_button.draw(SCREEN)
         pygame.display.flip()
 
-def stage1_scene():
+async def stage1_scene():
     girl = MarioGirl()
     current_room = "Bedroom"
 
@@ -755,7 +755,7 @@ def stage1_scene():
 
         pygame.display.flip()
 
-def stage2_scene():
+async def stage2_scene():
     slots = []
     positions = {
         "Legs": (WIDTH//2, HEIGHT//2 + 80),
@@ -820,7 +820,7 @@ def stage2_scene():
 
         pygame.display.flip()
 
-def stage3_scene():
+async def stage3_scene():
     lightning_btn = Button((WIDTH//2 - 300, HEIGHT//2 + 80, 240, 90), "⚡ Lightning", YELLOW, ORANGE)
     kiss_btn = Button((WIDTH//2 + 60, HEIGHT//2 + 80, 240, 90), "💋 Kiss", PINK, PINK_LIGHT)
 
@@ -893,7 +893,7 @@ def stage3_scene():
 
     return STATE_ENDING, choice
 
-def ending_scene(choice):
+async def ending_scene(choice):
     timer = 0
     duration = 7000
     hugging = choice == "KISS"
@@ -1003,7 +1003,7 @@ def ending_scene(choice):
 
     return ending_menu()
 
-def ending_menu():
+async def ending_menu():
     play_again_btn = Button((WIDTH//2 - 310, HEIGHT//2 + 50, 280, 90), "🔄 Play Again")
     quit_btn = Button((WIDTH//2 + 30, HEIGHT//2 + 50, 280, 90), "🚪 Quit", GREY, (90, 90, 100))
 
@@ -1038,22 +1038,23 @@ def ending_menu():
         pygame.display.flip()
 
 # ------------------------- MAIN -------------------------
-def main():
+async def main():
     start_music()
     state = STATE_TITLE
     choice = None
 
     while True:
         if state == STATE_TITLE:
-            state = title_scene()
+            state = await title_scene()
         elif state == STATE_STAGE1:
-            state = stage1_scene()
+            state = await stage1_scene()
         elif state == STATE_STAGE2:
-            state = stage2_scene()
+            state = await stage2_scene()
         elif state == STATE_STAGE3:
-            state, choice = stage3_scene()
+            state, choice = await stage3_scene()
         elif state == STATE_ENDING:
-            state = ending_scene(choice)
+            state = await ending_scene(choice)
+        await asyncio.sleep(0)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main()) 
