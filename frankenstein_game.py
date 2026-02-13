@@ -24,7 +24,7 @@ except pygame.error:
 
 WIDTH, HEIGHT = 1000, 650
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Will You Be Frankenstien? 🎮💕 (Enhanced Edition)")
+pygame.display.set_caption("Will You Be Frankenstien? 🎮💕")
 CLOCK = pygame.time.Clock()
 FONT_BIG = pygame.font.SysFont("arial", 52, bold=True)
 FONT_MED = pygame.font.SysFont("arial", 34)
