@@ -16,7 +16,7 @@ import asyncio  # Added for web deployment
 pygame.init()
 
 # Safe audio init for Codespaces
-sound_enabled = True
+sound_enabled = False
 try:
     pygame.mixer.init()
 except pygame.error:
@@ -588,8 +588,8 @@ def room_transition_effect(from_room, to_room):
 
         pygame.display.flip()
         CLOCK.tick(40)
-
-    pygame.time.delay(400)
+        await asyncio.sleep(0)
+    await asyncio.sleep(0.4)
 
 # ------------------------- STATES -------------------------
 STATE_TITLE = "TITLE"
@@ -717,7 +717,7 @@ async def stage1_scene():
                 if next_room == "Lab" and collected_count < total_parts:
                     next_room = ROOMS[0]
 
-                room_transition_effect(current_room, next_room)
+                await room_transition_effect(current_room, next_room)
                 current_room = next_room
                 girl.x = WIDTH - 120 if current_room == "Living Room" else 100
                 girl.y = HEIGHT - 150
