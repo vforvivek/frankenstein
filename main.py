@@ -4,12 +4,13 @@ Will You Be Frankenstien? - Super Mario Style Edition
 Enhanced graphics with detailed body parts and room decorations.
 Includes all sound effects!
 """
-import asyncio
+
 import pygame
 import sys
 import os
 import math
 import random
+import asyncio  # Added for web deployment
 
 # ------------------------- INIT -------------------------
 pygame.init()
@@ -24,7 +25,7 @@ except pygame.error:
 
 WIDTH, HEIGHT = 1000, 650
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Will You Be Frankenstien? 🎮💕")
+pygame.display.set_caption("Will You Be Frankenstien? 🎮💕 (Enhanced Edition)")
 CLOCK = pygame.time.Clock()
 FONT_BIG = pygame.font.SysFont("arial", 52, bold=True)
 FONT_MED = pygame.font.SysFont("arial", 34)
@@ -652,6 +653,7 @@ async def title_scene():
         SCREEN.blit(controls, controls.get_rect(center=(WIDTH//2, HEIGHT - 60)))
 
         start_button.draw(SCREEN)
+        await asyncio.sleep(0)
         pygame.display.flip()
 
 async def stage1_scene():
@@ -1038,23 +1040,22 @@ async def ending_menu():
         pygame.display.flip()
 
 # ------------------------- MAIN -------------------------
-async def main():
+def main():
     start_music()
     state = STATE_TITLE
     choice = None
 
     while True:
         if state == STATE_TITLE:
-            state = await title_scene()
+            state = title_scene()
         elif state == STATE_STAGE1:
-            state = await stage1_scene()
+            state = stage1_scene()
         elif state == STATE_STAGE2:
-            state = await stage2_scene()
+            state = stage2_scene()
         elif state == STATE_STAGE3:
-            state, choice = await stage3_scene()
+            state, choice = stage3_scene()
         elif state == STATE_ENDING:
-            state = await ending_scene(choice)
-        await asyncio.sleep(0)
+            state = ending_scene(choice)
 
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    asyncio.run(main())
