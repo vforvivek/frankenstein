@@ -14,29 +14,36 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
-    - name: Install pygbag
+
+    - name: Install dependencies
       run: |
-        echo "Installing pygbag..."
         python -m pip install --upgrade pip
-        python -m pip install pygbag
-        echo "Pygbag installed successfully"
-    
+        python -m pip install pygame-ce pygbag
+
+    - name: Verify main.py exists
+      run: |
+        if [ ! -f "main.py" ]; then
+          echo "Error: main.py not found!"
+          ls -la
+          exit 1
+        fi
+        echo "main.py found successfully"
+
     - name: Build game with pygbag
       run: |
         echo "Building game to WebAssembly..."
         python -m pygbag --build .
         echo "Build completed successfully"
-    
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
