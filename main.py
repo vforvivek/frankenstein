@@ -1041,6 +1041,27 @@ async def ending_menu():
 
 # ------------------------- MAIN -------------------------
 def main():
+    # Click-to-start screen for web (browser audio policy)
+    SCREEN.fill(BLACK)
+    title = FONT_BIG.render("Click to Start", True, WHITE)
+    SCREEN.blit(title, title.get_rect(center=(WIDTH//2, HEIGHT//2 - 50)))
+    subtitle = FONT_SMALL.render("(Click anywhere or press any key)", True, PINK)
+    SCREEN.blit(subtitle, subtitle.get_rect(center=(WIDTH//2, HEIGHT//2 + 20)))
+    pygame.display.flip()
+    
+    # Wait for user interaction
+    waiting = True
+    while waiting:
+        await asyncio.sleep(0)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
+                waiting = False
+                break
+    
+    # NOW start the game
     start_music()
     state = STATE_TITLE
     choice = None
