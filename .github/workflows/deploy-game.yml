@@ -37,16 +37,20 @@ jobs:
           exit 1
         fi
         echo "main.py found successfully"
+        echo "Repository contents:"
+        ls -la
 
     - name: Build game with pygbag
       run: |
         echo "Building game to WebAssembly..."
         python -m pygbag --build .
         echo "Build completed successfully"
+        echo "Build output:"
+        ls -la build/web || echo "build/web not found"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
-        cname: false
+        force_orphan: true
