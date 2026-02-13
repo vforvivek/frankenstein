@@ -36,17 +36,13 @@ jobs:
           ls -la
           exit 1
         fi
-        echo "main.py found successfully"
-        echo "Repository contents:"
-        ls -la
+        echo "✓ main.py found"
 
-    - name: Build game with pygbag
+    - name: Build game with pygbag (allow WAV files)
       run: |
         echo "Building game to WebAssembly..."
-        python -m pygbag --build .
+        python -m pygbag --build --disable-sound-format-error .
         echo "Build completed successfully"
-        echo "Build output:"
-        ls -la build/web || echo "build/web not found"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
